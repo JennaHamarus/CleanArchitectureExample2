@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureExample.Application.Interfaces;
+using CleanArchitectureExample.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CleanArchitectureExample.WebAPI.Controllers
@@ -15,16 +16,10 @@ namespace CleanArchitectureExample.WebAPI.Controllers
         }
 
         [HttpPost("UserAsync")]
-        public async Task<IActionResult>RegisterUserAsync(string name, string email)
+        public async Task<IActionResult>RegisterUserAsync([FromBody] UserRegistrationRequest request)
         {
-            //Onko nimi ja sähköposti annettu?
-            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email))
-            {
-                return BadRequest("Nimi ja sähköpostiosoite ovat pakollisia tietoja.");
-            }
-
-            //Onko sähöposti oikeassa muodossa?
-            var isExistingEmail = await _registrationService.EmailExistsAsync(email);
+            //ASP.NET validoi pyynnön automaattisesti ja palauttaa virheen, jos validointi epäonnistuu
+            var isExistingEmail = await _registrationService.EmailExistsAsync(request.Email);
 
             if (isExistingEmail)
             {
@@ -32,13 +27,14 @@ namespace CleanArchitectureExample.WebAPI.Controllers
             }
 
             //Onnistuiko rekisteröinti?
-            var success = await _registrationService.RegisterUserAsync(name, email);
+            var success = await _registrationService.RegisterUserAsync(request.Name, request.Email);
 
             if (!success)
             {
                 return BadRequest("Rekisteröinti epäonnistui.");
             }
 
+            //Palautetaan onnistunut rekisteröinti
             return Created();
         }
     }
