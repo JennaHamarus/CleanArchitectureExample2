@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CleanArchitectureExample.Infrastructure\CleanArchitectureExample.Infrastructure.csproj" />
+    <ProjectReference Include="..\CleanArchitectureExaple.Application\CleanArchitectureExample.Application.csproj" />
+    <ProjectReference Include="..\CleanArchitectureExaple.Domain\CleanArchitectureExample.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
