@@ -1,4 +1,5 @@
-﻿using CleanArchitectureExaple.Domain.Entities;
+﻿using CleanArchitectureExample.Application.Dtos;
+using CleanArchitectureExaple.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,5 +17,9 @@ namespace CleanArchitectureExample.Application.Interfaces
         Task<bool> EmailExistsAsync(string email);
 
         Task<bool> RegisterUserAsync(string name, string email);
+
+        Task<UserDto?> GetUserByEmailAsync(string email);
+
+        
     }
 }

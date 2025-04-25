@@ -1,4 +1,6 @@
-﻿using CleanArchitectureExample.Application.Interfaces;
+﻿using CleanArchitectureExample.Application.Dtos;
+using CleanArchitectureExample.Application.Interfaces;
+using CleanArchitectureExample.Application.Mapper;
 using CleanArchitectureExaple.Domain.Entities;
 using CleanArchitectureExaple.Domain.Interfaces;
 using System;
@@ -40,6 +42,11 @@ namespace CleanArchitectureExample.Application.Services
             {
                 return false;
             }
+        }
+        public async Task <UserDto?> GetUserByEmailAsync(string email)
+        {
+            var user = await _userRepository.GetByEmailAsync(email);
+            return user != null? UserMapper.ToDto(user) : null;
         }
     }
 }
