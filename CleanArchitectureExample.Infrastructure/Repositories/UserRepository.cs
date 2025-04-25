@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace CleanArchitectureExample.Infrastructure.Repositories
 {
@@ -23,6 +24,24 @@ namespace CleanArchitectureExample.Infrastructure.Repositories
         {
             _context.Users.Add(user);
             _context.SaveChanges();
+        }
+
+        public async Task AddAsync(User user)
+        {
+            try
+            {
+                await _context.Users.AddAsync(user);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new ApplicationException("Virhe käyttäjän lisäämisessä tietokantaan.", ex);
+            }
+        }
+
+        public async Task<bool> EmailExistsAsync(string email)
+        {
+            return await _context.Users.AnyAsync(u => u.Email == email);
         }
     }
 }

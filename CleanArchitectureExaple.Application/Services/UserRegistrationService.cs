@@ -18,10 +18,28 @@ namespace CleanArchitectureExample.Application.Services
             _userRepository = userRepository;
         }
 
-        public void RegisterUser(string name, string email)
+        public async Task<bool> EmailExistsAsync(string email)
         {
-            var user = new User { Id = Guid.NewGuid(), Name = name, Email = email };
-            _userRepository.Add(user);
+            return await _userRepository.EmailExistsAsync(email);
+        }
+
+        public async Task<bool> RegisterUserAsync(string name, string email)
+        {
+            try
+            {
+                if (await EmailExistsAsync(email))
+                {
+                    return false; //Sähköposti on jo käytössä
+                }
+
+                var user = new User { Id = Guid.NewGuid(), Name = name, Email = email };
+                await _userRepository.AddAsync(user);
+                return true; //Rekisteröinti onnistui
+            }
+            catch (ApplicationException)
+            {
+                return false;
+            }
         }
     }
 }

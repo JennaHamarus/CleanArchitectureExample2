@@ -10,5 +10,8 @@ namespace CleanArchitectureExaple.Domain.Interfaces
     public interface IUserRepository
     {
         void Add(User user);
+
+        Task<bool> EmailExistsAsync(string email);
+        Task AddAsync(User user);
     }
 }

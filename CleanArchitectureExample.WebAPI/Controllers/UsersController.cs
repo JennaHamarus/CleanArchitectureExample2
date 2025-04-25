@@ -14,11 +14,32 @@ namespace CleanArchitectureExample.WebAPI.Controllers
             _registrationService = registrationService;
         }
 
-        [HttpPost]
-        public IActionResult RegisterUser(string name, string email)
+        [HttpPost("UserAsync")]
+        public async Task<IActionResult>RegisterUserAsync(string name, string email)
         {
-            _registrationService.RegisterUser(name, email);
-            return Ok("Rekisteröityminen onnistui");
+            //Onko nimi ja sähköposti annettu?
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Nimi ja sähköpostiosoite ovat pakollisia tietoja.");
+            }
+
+            //Onko sähöposti oikeassa muodossa?
+            var isExistingEmail = await _registrationService.EmailExistsAsync(email);
+
+            if (isExistingEmail)
+            {
+                return BadRequest("Sähköpostiosoite on jo käytössä.");
+            }
+
+            //Onnistuiko rekisteröinti?
+            var success = await _registrationService.RegisterUserAsync(name, email);
+
+            if (!success)
+            {
+                return BadRequest("Rekisteröinti epäonnistui.");
+            }
+
+            return Created();
         }
     }
 }
