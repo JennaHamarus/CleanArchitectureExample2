@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureExample.Application.Dtos;
+using CleanArchitectureExaple.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,11 @@ namespace CleanArchitectureExample.Application.Mapper
 {
     public static class UserMapper
     {
-        public static UserDto ToDto(UserDto user)
+        public static UserDto ToDto(User user)
         {
             return new UserDto
             {
+                Id = user.Id,
                 Name = user.Name,
                 Email = user.Email
             };

@@ -1,4 +1,5 @@
 ﻿using CleanArchitectureExample.Application.Interfaces;
+using CleanArchitectureExample.Application.Services;
 using CleanArchitectureExample.WebAPI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -36,6 +37,17 @@ namespace CleanArchitectureExample.WebAPI.Controllers
 
             //Palautetaan onnistunut rekisteröinti
             return Created();
+        }
+
+        [HttpGet("by-email")]
+        public async Task<IActionResult> GetUserByEmail([FromQuery] string email)
+        {
+            var user = await _registrationService.GetUserByEmailAsync(email);
+
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
     }
 }
